@@ -2,11 +2,18 @@
 namespace Packaged\Formatter;
 
 use Packaged\Formatter\Bytes\BinaryBytes;
+use Packaged\Formatter\Bytes\HumanBytes;
 use Packaged\Formatter\Bytes\MetricBytes;
 
 class Formatter
 {
   public static function bytes($bytes, $precision = 2)
+  {
+    $formatter = new HumanBytes();
+    return $formatter->format($bytes, $precision);
+  }
+
+  public static function binaryBytes($bytes, $precision = 2)
   {
     $formatter = new BinaryBytes();
     return $formatter->format($bytes, $precision);

@@ -1,0 +1,3 @@
+<?php
+$autoLoader = require 'vendor/autoload.php';
+$autoLoader->add('', ['tests']);

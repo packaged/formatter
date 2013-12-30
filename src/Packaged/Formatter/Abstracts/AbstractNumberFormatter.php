@@ -8,7 +8,7 @@ abstract class AbstractNumberFormatter implements INumberFormatter
   /**
    * @var integer
    */
-  protected $_base;
+  protected $_base = 1;
 
   /**
    * @var integer
@@ -27,6 +27,20 @@ abstract class AbstractNumberFormatter implements INumberFormatter
    */
   protected $_suffixes = array();
 
+  /**
+   * sprintf format, first param size, second suffix
+   *
+   * default "%d %s"
+   *
+   * %%num%% will force whole numbers to display without points e.g. 9.00 to 9
+   *
+   * %%precision%% will change to the specified precision
+   * e.g. %0.%%precision%%f will change to %0.2f
+   *
+   * @var string
+   */
+  protected $_outputFormat;
+
   public function forcePrecision($on = true)
   {
     $this->_forcePrecision = $on;
@@ -35,7 +49,11 @@ abstract class AbstractNumberFormatter implements INumberFormatter
 
   protected function _cleanInput($value)
   {
-    return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT);
+    return filter_var(
+      $value,
+      FILTER_SANITIZE_NUMBER_FLOAT,
+      FILTER_FLAG_ALLOW_FRACTION
+    );
   }
 
   public function format($value, $precision = 2)
@@ -43,16 +61,19 @@ abstract class AbstractNumberFormatter implements INumberFormatter
     $this->_precision = $precision;
     $finalValue       = $value = $this->_cleanInput($value);
     $finalSuffix      = (isset($this->_suffixes[0]) ? : null);
-    krsort($this->_suffixes);
 
-    foreach($this->_suffixes as $power => $suffix)
+    if($this->_base !== null && !empty($this->_suffixes))
     {
-      $limit = pow($this->_base, $power);
-      if($limit <= $value)
+      krsort($this->_suffixes);
+      foreach($this->_suffixes as $power => $suffix)
       {
-        $finalValue  = $power === 0 ? $value : $value / $limit;
-        $finalSuffix = $suffix;
-        break;
+        $limit = pow($this->_base, $power);
+        if($limit <= $value)
+        {
+          $finalValue  = $power === 0 ? $value : $value / $limit;
+          $finalSuffix = $suffix;
+          break;
+        }
       }
     }
 
@@ -61,8 +82,29 @@ abstract class AbstractNumberFormatter implements INumberFormatter
 
   protected function _output($value, $suffix)
   {
-    $format = $this->_getNumberFormat($value);
-    return sprintf("$format %s", $value, $suffix);
+    if($this->_outputFormat === null)
+    {
+      $this->_outputFormat = "%%num%% %s";
+    }
+
+    $format = str_replace(
+      ['%%num%%', '%%precision%%'],
+      [$this->_getNumberFormat($value), $this->_precision],
+      $this->_outputFormat
+    );
+
+    return sprintf($format, $value, $suffix);
+  }
+
+  public function setOutputFormat($format = "%%num%% %s")
+  {
+    $this->_outputFormat = $format;
+    return $this;
+  }
+
+  public function getOutputFormat()
+  {
+    return $this->_outputFormat;
   }
 
   protected function _getNumberFormat($value)

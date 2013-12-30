@@ -13,7 +13,7 @@ class HumanBytesTest extends BaseNumberFormatterTest
   public function testSlackPrecision()
   {
     $this->_formatter->forcePrecision(false);
-    $this->clearConversions();;
+    $this->clearConversions();
 
     $this->addConversion(bcmul(1.00, bcpow(1024, 1)), '1 KB');
     $this->addConversion(bcmul(1.25, bcpow(1024, 1)), '1.25 KB');

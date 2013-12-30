@@ -28,9 +28,16 @@ abstract class BaseNumberFormatterTest extends BaseFormatterTest
 
   public function testConversions()
   {
-    foreach($this->_conversions as $value => $expected)
+    if(!empty($this->_conversions))
     {
-      $this->assertEquals($expected, $this->_formatter->format($value, 2));
+      foreach($this->_conversions as $value => $expected)
+      {
+        $this->assertEquals($expected, $this->_formatter->format($value, 2));
+      }
+    }
+    else
+    {
+      $this->assertNull($this->_conversions);
     }
   }
 }

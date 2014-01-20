@@ -2,7 +2,7 @@
 abstract class BaseFormatterTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @var \Packaged\Formatter\IFormatter
+   * @var \Packaged\Formatter\FormatterInterface
    */
   protected $_formatter;
 

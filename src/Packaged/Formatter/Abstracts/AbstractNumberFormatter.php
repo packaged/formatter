@@ -1,9 +1,9 @@
 <?php
 namespace Packaged\Formatter\Abstracts;
 
-use Packaged\Formatter\INumberFormatter;
+use Packaged\Formatter\NumberFormatterInterface;
 
-abstract class AbstractNumberFormatter implements INumberFormatter
+abstract class AbstractNumberFormatter implements NumberFormatterInterface
 {
   /**
    * @var integer

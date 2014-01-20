@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\Formatter;
 
-interface INumberFormatter extends IFormatter
+interface NumberFormatterInterface extends FormatterInterface
 {
   public function format($value, $precision = null);
 }

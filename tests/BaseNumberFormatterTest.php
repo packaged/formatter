@@ -2,7 +2,7 @@
 abstract class BaseNumberFormatterTest extends BaseFormatterTest
 {
   /**
-   * @var \Packaged\Formatter\INumberFormatter
+   * @var \Packaged\Formatter\NumberFormatterInterface
    */
   protected $_formatter;
 

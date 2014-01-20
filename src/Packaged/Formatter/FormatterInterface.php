@@ -1,7 +1,7 @@
 <?php
 namespace Packaged\Formatter;
 
-interface IFormatter
+interface FormatterInterface
 {
   public function format($value);
 }

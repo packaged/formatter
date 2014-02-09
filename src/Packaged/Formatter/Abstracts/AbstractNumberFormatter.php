@@ -41,12 +41,26 @@ abstract class AbstractNumberFormatter implements NumberFormatterInterface
    */
   protected $_outputFormat;
 
+  /**
+   * When enabled, the precision will be forced in output formatting e.g. 10.00
+   *
+   * @param bool $on
+   *
+   * @return $this
+   */
   public function forcePrecision($on = true)
   {
     $this->_forcePrecision = $on;
     return $this;
   }
 
+  /**
+   * Make sure we have a nice clean value to work with
+   *
+   * @param $value
+   *
+   * @return mixed
+   */
   protected function _cleanInput($value)
   {
     return filter_var(
@@ -56,6 +70,14 @@ abstract class AbstractNumberFormatter implements NumberFormatterInterface
     );
   }
 
+  /**
+   * Convert the input value to a formatted number
+   *
+   * @param int      $value
+   * @param int|null $precision
+   *
+   * @return mixed
+   */
   public function format($value, $precision = 2)
   {
     $this->_precision = $precision;
@@ -80,6 +102,14 @@ abstract class AbstractNumberFormatter implements NumberFormatterInterface
     return $this->_output($finalValue, $finalSuffix);
   }
 
+  /**
+   * Combine the number and suffix together with the output format
+   *
+   * @param $value
+   * @param $suffix
+   *
+   * @return string
+   */
   protected function _output($value, $suffix)
   {
     if($this->_outputFormat === null)
@@ -96,17 +126,37 @@ abstract class AbstractNumberFormatter implements NumberFormatterInterface
     return sprintf($format, $value, $suffix);
   }
 
+  /**
+   * Specify an output format for use with sprintf
+   *
+   * @param string $format
+   *
+   * @return $this
+   */
   public function setOutputFormat($format = "%%num%% %s")
   {
     $this->_outputFormat = $format;
     return $this;
   }
 
+  /**
+   * Retrieve the current output format
+   *
+   * @return string
+   */
   public function getOutputFormat()
   {
     return $this->_outputFormat;
   }
 
+  /**
+   * Get an sprintf number format, if the precision is not forced, and there is
+   * no decimal place, an integer value will be used.
+   *
+   * @param $value
+   *
+   * @return string
+   */
   protected function _getNumberFormat($value)
   {
     if(fmod($value, 1) == 0 && !$this->_forcePrecision)

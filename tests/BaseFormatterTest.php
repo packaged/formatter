@@ -9,7 +9,7 @@ abstract class BaseFormatterTest extends PHPUnit_Framework_TestCase
   public function testFormatter()
   {
     $this->assertInstanceOf(
-      '\Packaged\Formatter\IFormatter',
+      '\Packaged\Formatter\FormatterInterface',
       $this->_formatter
     );
   }

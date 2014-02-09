@@ -11,7 +11,7 @@ abstract class BaseNumberFormatterTest extends BaseFormatterTest
   public function testNumberFormatter()
   {
     $this->assertInstanceOf(
-      '\Packaged\Formatter\INumberFormatter',
+      '\Packaged\Formatter\NumberFormatterInterface',
       $this->_formatter
     );
   }

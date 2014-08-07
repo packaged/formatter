@@ -1,5 +1,6 @@
 {
   "name":              "packaged/formatter",
+  "description":       "Data Formatters",
   "license":           "MIT",
   "authors":           [
     {
